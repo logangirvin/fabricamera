@@ -1,7 +1,9 @@
 
 // This script generates an unpublished long-form DID, storing private keys in Azure Key Vault.
 // You should only need to run this script once to generate your verifier's DID and its keys.
-import * as config from '../client.json';
+import getjson from './getJson';
+import { writeFileSync } from 'fs';
+const config = getjson('client.json');
 
 //////////////// Load DID packages
 import { ClientSecretCredential } from '@azure/identity';
@@ -26,5 +28,7 @@ var crypto = new CryptoBuilder()
     crypto = await crypto.generateKey(KeyUse.Signature, 'signing');
     crypto = await crypto.generateKey(KeyUse.Signature, 'recovery');
     const did = await new LongFormDid(crypto).serialize();
-    console.log(did);
+    writeFileSync('did.json', JSON.stringify({
+        did
+    }));
 })();

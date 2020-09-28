@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "build": "tsc --resolveJsonModule",
-    "setup": "node dist/src/setup.js"
+    "setup": "npm run build && node dist/setup.js",
+    "generate": "node dist/createrequest.js"
   },
   "author": "",
   "license": "MIT",
