@@ -5,6 +5,7 @@ import { CryptoBuilder,
       IRequestor
     } from 'verifiablecredentials-verification-sdk-typescript';
 import * as crypto from 'crypto';
+import { exit } from 'os';
 import getjson from './getJson';
 const config = getjson('client.json');
 const did = getjson('did.json');
@@ -28,10 +29,10 @@ const requestBuilder = new RequestorBuilder({
     clientPurpose: 'Apply for a Camera today!',
     presentationDefinition: {
         input_descriptors: [{
-            id: "Contoso University Gradute",
+            id: "edu",
             schema: {
-                uri: ['https://schemas.contoso.edu/credentials/schemas/diploma2020'],
-                name: "Contoso University Gradute",
+                uri: ['https://schema.org/EducationalOccupationalCredential'],
+                name: "Educational Background",
             },
             issuance: [{
                 manifest: 'https://portableidentitycards.azure-api.net/v1.0/9c59be8b-bd18-45d9-b9d9-082bc07c094f/portableIdentities/contracts/Diploma2020'
@@ -44,7 +45,9 @@ const requestBuilder = new RequestorBuilder({
 requestBuilder.build().create().then((presentationRequest) => {
     if (presentationRequest.result) {
         console.log(presentationRequest.request);
+        exit(0);
     } else {
         console.error(presentationRequest.detailedError);
+        exit(1);
     }
 });
