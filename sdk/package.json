@@ -2,15 +2,17 @@
   "name": "sdk",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --resolveJsonModule",
+    "setup": "node dist/src/setup.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@azure/identity": "^1.1.0",
     "verifiablecredentials-verification-sdk-typescript": "^0.10.0-preview.29"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.3"
   }
 }
