@@ -1,17 +1,17 @@
-from flask import Flask, Response
+from flask import Flask, Response, send_from_directory, request
 import qrcode
 from qrcode.image.svg import SvgPathImage
 import subprocess
 import io
 import os
-app = Flask(__name__)
+app = Flask(__name__, static_folder='www')
 
-@app.route("/")
+@app.route('/')
 def root():
-    return "Hello, World!"
+    return send_from_directory('www', 'index.html')
 
 @app.route('/request')
-def request():
+def vcRequest():
     request=subprocess.run('node dist/createrequest.js', capture_output=True, cwd='./sdk')
     if request.returncode == 0:
         print('successful request generated')
@@ -29,5 +29,5 @@ def qr():
     url = 'openid://vc/?request_uri={0}/request'.format(host)
     f = io.BytesIO()
     factory = SvgPathImage
-    qrcode.make(url, image_factory=factory).save(f)
+    qrcode.make(url, image_factory=factory, ).save(f)
     return Response(f.getvalue(), mimetype='image/svg+xml')
